@@ -1,0 +1,46 @@
+<div class="auth-container">
+    <h1>SmartSeat Exam Verification</h1>
+
+    <div class="main-layout">
+        <div class="left-section">
+            <div class="camera-wrapper">
+                <div class="box" [hidden]="capturedImage">
+                    <video #video autoplay playsinline></video>
+                </div>
+                <div class="box" *ngIf="capturedImage">
+                    <img [src]="capturedImage" alt="Preview" />
+                </div>
+            </div>
+            <p *ngIf="response" class="res success">{{ response }}</p>
+            <p *ngIf="error" class="error">{{ error }}</p>
+        </div>
+
+        <div class="right-section">
+            <div class="input-group">
+                <label>Enrollment Identity</label>
+                <input [(ngModel)]="enrNo" placeholder="Enter Enrollment Number" class="enr-input" />
+            </div>
+
+            <div class="notice-box">
+                <strong>💡 Verification Tips:</strong>
+                <ul>
+                    <li>Center your face in the frame.</li>
+                    <li>Ensure bright, even lighting.</li>
+                    <li>Avoid heavy glare on spectacles.</li>
+                    <li>Keep a neutral expression.</li>
+                </ul>
+            </div>
+
+            <div class="controls">
+                <button *ngIf="!capturedImage" (click)="capturePhoto()" class="btn-capture">Take Photo</button>
+
+                <ng-container *ngIf="capturedImage">
+                    <button (click)="verifyFace()" [disabled]="isVerifying" class="btn-verify">
+                        {{ isVerifying ? 'Verifying...' : 'Confirm & Login' }}
+                    </button>
+                    <button (click)="retake()" class="btn-retake" [disabled]="isVerifying">Retake Photo</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
