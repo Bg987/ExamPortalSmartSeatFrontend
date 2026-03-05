@@ -67,7 +67,7 @@ export class LoginComponent implements AfterViewInit {
     formData.append('enrollmentNumber', this.enrNo);
     formData.append('image', this.imageBlob, 'capture.jpg');
 
-    this.http.post<any>(`${this.url}/Auth/login`, formData, {
+    this.http.post<any>(`${this.url}/ExamApi/Auth/login`, formData, {
       withCredentials: true,
     }).subscribe({
       next: (res) => {
