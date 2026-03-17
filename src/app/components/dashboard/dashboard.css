@@ -1,0 +1,213 @@
+/* --- Global Dashboard Styles --- */
+.dashboard-wrapper {
+    background-color: #f4f7f9;
+    /* Soft off-white background */
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    color: #334155;
+}
+
+/* --- Top Navigation Bar --- */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    height: 70px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #1e293b;
+}
+
+.ai-tag {
+    color: #3b82f6;
+    /* Modern Blue */
+    background: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-left: 4px;
+}
+
+.logout-btn {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #ef4444;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+/* --- Main Content Layout --- */
+.dashboard-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.welcome-banner {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.welcome-banner h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+
+.welcome-banner p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* --- Module Grid & Cards --- */
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.module-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.module-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: #3b82f6;
+}
+
+/* --- Per-Card Status Badge --- */
+.card-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+.status-dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* --- Dot States & Animations --- */
+.status-dot.connecting {
+    background-color: #f59e0b;
+    /* Amber */
+    animation: pulse-amber 2s infinite;
+}
+
+.status-dot.online {
+    background-color: #10b981;
+    /* Emerald Green */
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.status-dot.offline {
+    background-color: #f43f5e;
+    /* Rose Red */
+}
+
+@keyframes pulse-amber {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+}
+
+/* --- Card Body Styling --- */
+.card-icon {
+    height: 140px;
+    font-size: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.card-body h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.card-body p {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.action-link {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.2s;
+}
+
+.module-card:hover .action-link {
+    gap: 10px;
+    /* Moves the arrow slightly on hover */
+}
+

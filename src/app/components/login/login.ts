@@ -73,8 +73,9 @@ export class LoginComponent implements AfterViewInit {
       next: (res) => {
       this.isVerifying = false;
       // Structure is now ALWAYS { status: string, message: string, verified: boolean }
-      if (res.status === 'success' && res.verified === true) {
-        this.router.navigate(['/dashboard']);
+        if (res.status === 'success' && res.verified === true) {
+          localStorage.setItem('token',res.data);
+          this.router.navigate(['/dashboard']);
       } else {
         this.response = res;
         this.error = res.message; // Shows "Face match failed" or "Biometric missing"

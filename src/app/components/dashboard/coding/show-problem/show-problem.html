@@ -1,0 +1,52 @@
+<div class="coding-dashboard">
+    <header class="list-header">
+        <div class="header-content">
+            <nav class="back-nav">
+                <button class="back-btn" routerLink="/dashboard">
+                    <span class="arrow">←</span> Back to Dashboard
+                </button>
+            </nav>
+            <h1>Coding Challenges</h1>
+            <p>Select a problem to begin your assessment. Your progress will be tracked automatically.</p>
+        </div>
+        <div class="stats-badge">
+            <span class="count">{{ questions.length }}</span>
+            <span class="label">Available Tasks</span>
+        </div>
+    </header>
+
+    <div class="questions-wrapper">
+        <div *ngIf="questions.length === 0" class="loading-state">
+            <div class="spinner"></div>
+            <p>Fetching challenges from server...</p>
+        </div>
+
+        <div *ngFor="let q of questions" class="question-card" (click)="openCompiler(q.id)">
+            <div class="card-left">
+                <div class="id-tag">#{{ q.id }}</div>
+            </div>
+
+            <div class="card-main">
+                <h3 class="title">
+                    {{ q.title ? q.title : 'Algorithm Challenge ' + q.id }}
+                </h3>
+                <p class="statement">
+                    {{ q.problemStatement }}
+                </p>
+                <div class="metadata">
+                    <span class="status-chip" [class.assigned]="q.assigned">
+                        {{ q.assigned ? 'Assigned' : 'Open' }}
+                    </span>
+                    <span class="type-chip">Programming</span>
+                </div>
+            </div>
+
+            <div class="card-right">
+                <button class="solve-btn">
+                    <span>Solve</span>
+                    <i class="arrow-icon">→</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+/* Container Layout */
+.coding-dashboard {
+    padding: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Header Section */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 20px;
+}
+
+.header-content h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.header-content p {
+    color: #64748b;
+    font-size: 1.05rem;
+}
+
+.stats-badge {
+    background: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+}
+
+.stats-badge .count {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #3b82f6;
+}
+
+.stats-badge .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+/* Wrapper and Loading State */
+.questions-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 60px;
+    color: #64748b;
+}
+
+/* Question Cards */
+.question-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.question-card:hover {
+    transform: translateX(10px);
+    border-color: #3b82f6;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Left ID Section */
+.card-left {
+    margin-right: 25px;
+}
+
+.id-tag {
+    background: #eff6ff;
+    color: #3b82f6;
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 10px;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Main Content Section */
+.card-main {
+    flex: 1;
+}
+
+.card-main .title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.card-main .statement {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Truncate long text to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Chips/Badges */
+.metadata {
+    display: flex;
+    gap: 10px;
+}
+
+.status-chip,
+.type-chip {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.status-chip.assigned {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.type-chip {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* Action Section */
+.card-right {
+    margin-left: 20px;
+}
+
+.solve-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.solve-btn:hover {
+    background: #2563eb;
+}
+
+.arrow-icon {
+    font-style: normal;
+    transition: transform 0.2s;
+}
+
+.question-card:hover .arrow-icon {
+    transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .question-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card-right {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .solve-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+
+.back-nav {
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.back-btn .arrow {
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.back-btn:hover {
+    background-color: #ffffff;
+    border-color: #3b82f6;
+    color: #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.back-btn:hover .arrow {
+    transform: translateX(-3px);
+    /* Subtle nudge to the left */
+}

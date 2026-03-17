@@ -1,1 +1,56 @@
-<p>dashboard works!</p>
+<div class="dashboard-wrapper">
+    <header class="top-nav">
+        <div class="logo-section">
+            <span class="logo-text">SmartSeat</span>
+        </div>
+        <div class="user-info">
+            <button class="logout-btn" (click)="logout()" [disabled]="isLoggingOut">
+                {{ isLoggingOut ? 'Please wait...' : 'Logout' }}
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <section class="welcome-banner">
+            <h1>Welcome back!</h1>
+            <p>Select a module to continue your progress.</p>
+        </section>
+
+        <div class="module-grid">
+        
+            <div class="module-card" (click)="navigateTo('exam')">
+                <div class="card-status">
+                    <span class="status-dot"
+                        [ngClass]="{'online': isBackendReady2 === true, 'offline': isBackendReady2 === false, 'connecting': isBackendReady2 === null}">
+                    </span>
+                    <small>{{ isBackendReady2 === true ? 'Live' : (isBackendReady2 === false ? 'Offline' : 'Checking...')
+                        }}</small>
+                </div>
+                <div class="card-icon exam-icon">📝</div>
+                <div class="card-body">
+                    <h3>Online University Exam</h3>
+                    <p>MCQ based university examination</p>
+                    <button class="action-link">Start Exam →</button>
+                </div>
+            </div>
+        
+            <div class="module-card" (click)="navigateTo('coding')">
+                <div class="card-status">
+                    <span class="status-dot"
+                        [ngClass]="{'online': isBackendReady1 === true, 'offline': isBackendReady1 === false, 'connecting': isBackendReady1 === null}">
+                    </span>
+                    <small>{{ isBackendReady1 === true ? 'Live' : (isBackendReady1 === false ? 'Offline' : 'Checking...')
+                        }}</small>
+                </div>
+                <div class="card-icon code-icon">💻</div>
+                <div class="card-body">
+                    <h3>Coding Practice</h3>
+                    <p>Solve programming challenges using our integrated online compiler.</p>
+                    <button class="action-link" routerLink="/showProblem">Coding problems →</button>
+                </div>
+            </div>
+        
+        </div>
+    </main>
+    <router-outlet></router-outlet>
+</div>
