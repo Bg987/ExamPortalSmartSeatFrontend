@@ -31,20 +31,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         console.warn("Unauthorized! Clearing session...");
 
         // 1. Clear local session
-        localStorage.clear();
+        //localStorage.clear();
 
         // 2. Call your friend's logout API to be safe
         // Note: Using apiUrl2 since that's where the compiler/auth lives
-        http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
-          responseType: 'text',
-          withCredentials : true,
-         })
-          .subscribe({
-            next: () => console.log("Backend session invalidated"),
-            error: (err) => console.error("Could not reach logout API", err)
-          });
-        // 3. Force redirect to Login
-        router.navigate(['/login']);
+        // http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
+        //   responseType: 'text',
+        //   withCredentials : true,
+        //  })
+        //   .subscribe({
+        //     next: () => console.log("Backend session invalidated"),
+        //     error: (err) => console.error("Could not reach logout API", err)
+        //   });
+        // // 3. Force redirect to Login
+        // router.navigate(['/login']);
       }
 
       return throwError(() => error);
