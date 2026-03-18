@@ -20,28 +20,28 @@ export class Dashboard {
   private cdr :ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.checkSystem1();
+    //this.checkSystem1();
     this.checkSystem2();
   }
 
-  checkSystem1() {
-    // Ping your friend's backend (or your own) to show "Online" status
-    this.http.get(`${environment.apiUrl2}/student/health`, {
-      responseType: 'text'
-    }).subscribe({
-      next: () => {
-        this.isBackendReady1 = true;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-            this.isBackendReady1 = false;
-        this.cdr.detectChanges();
-            setTimeout(() => {
-          this.checkSystem1();
-        }, 2000);
-      }
-    });
-  }
+  // checkSystem1() {
+  //   // Ping your friend's backend (or your own) to show "Online" status
+  //   this.http.get(`${environment.apiUrl2}/student/health`, {
+  //     responseType: 'text'
+  //   }).subscribe({
+  //     next: () => {
+  //       this.isBackendReady1 = true;
+  //       this.cdr.detectChanges();
+  //     },
+  //     error: () => {
+  //           this.isBackendReady1 = false;
+  //       this.cdr.detectChanges();
+  //           setTimeout(() => {
+  //         this.checkSystem1();
+  //       }, 2000);
+  //     }
+  //   });
+  // }
 
     checkSystem2() {
       this.http.get(`${environment.apiUrl}/api/exam/health`, { 
