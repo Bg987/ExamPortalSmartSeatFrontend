@@ -32,9 +32,6 @@ export class Dashboard {
       next: () => {
         this.isBackendReady1 = true;
         this.cdr.detectChanges();
-            setTimeout(() => {
-          this.checkSystem1();
-        }, 5000);
       },
       error: () => {
             this.isBackendReady1 = false;
@@ -55,9 +52,6 @@ export class Dashboard {
           next: () => {
             this.isBackendReady2 = true;
             this.cdr.detectChanges();
-                  setTimeout(() => {
-                    this.checkSystem2();
-                  }, 5000);
           },
           error: () => {
             this.isBackendReady2 = false;
