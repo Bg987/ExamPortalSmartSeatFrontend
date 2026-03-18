@@ -35,7 +35,7 @@ export class ShowProblem implements OnInit {
 
   loadQuestions() {
     // 3. Make sure environment.apiUrl is used in production, but localhost is fine for now
-    this.http.get<CodingQuestion[]>(`${this.url}/student/getQuestions`)
+    this.http.get<CodingQuestion[]>(`${this.url}/api/student/getQuestions`)
       .subscribe({
         next: (data) => {
           // Optional: Filter out 'dummy' questions
@@ -49,6 +49,7 @@ export class ShowProblem implements OnInit {
   }
 
   openCompiler(id: number) {
-    this.router.navigate(['/coding/editor', id]);
+    
+    this.router.navigate(['/editor', id]);
   }
 }

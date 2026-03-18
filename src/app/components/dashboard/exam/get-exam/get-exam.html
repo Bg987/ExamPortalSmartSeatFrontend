@@ -1,0 +1,35 @@
+<div class="exam-container">
+    <div class="header">
+        <h1>My Exam Schedule</h1>
+        <p>Current Time: {{ currentTime | date:'shortTime' }}</p>
+    </div>
+
+    <div class="card-grid" *ngIf="!isLoading">
+        <div *ngFor="let exam of incompleteExams" class="exam-card" [ngClass]="{
+            'status-soon': getExamStatus(exam) === 'SOON',
+            'status-today': getExamStatus(exam) === 'TODAY'
+         }">
+
+            <div class="status-ribbon">
+                <span *ngIf="getExamStatus(exam) === 'SOON'">⚠️ STARTING SOON</span>
+                <span *ngIf="getExamStatus(exam) === 'TODAY'">📅 TODAY</span>
+                <span *ngIf="getExamStatus(exam) === 'UPCOMING'">🗓️ UPCOMING</span>
+            </div>
+
+            <div class="card-body">
+                <h3>{{ exam.examName }}</h3>
+                <div class="info-row">
+                    <span>📅 {{ exam.Date | date:'mediumDate' }}</span>
+                    <span>⏰ {{ exam.time }}</span>
+                    <span>⏳ {{ exam.duration}} Minutes</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="start-btn" [class.pulse]="getExamStatus(exam) === 'SOON'" (click)="enterExam(exam.id)">
+                    {{ getExamStatus(exam) === 'SOON' ? 'Enter Now' : 'View Details' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="editor-page-wrapper">
+
+    <!-- Left Side: Problem Details -->
+    <div class="side-panel problem-description">
+        <div class="pane-header">
+            <h2 *ngIf="problem">{{ problem.title || 'Algorithm Challenge ' + problem.id }}</h2>
+            <div class="status-tags" *ngIf="problem">
+                <span class="tag id-tag">#{{ problem.id }}</span>
+                <span class="tag status-tag" [class.assigned]="problem.assigned">
+                    {{ problem.assigned ? 'Assigned' : 'Open' }}
+                </span>
+            </div>
+        </div>
+
+        <div class="pane-content">
+            <div class="description-text" *ngIf="problem">
+                <p>{{ problem.problemStatement }}</p>
+            </div>
+            <hr class="divider" />
+            <div class="sample-info">
+                <h3>Instructions</h3>
+                <p>Write your code in the editor and click "Run Code" to validate against hidden test cases.</p>
+            </div>
+            <div class="test-cases-list">
+                <h3>Sample Test Cases</h3>
+            
+                <div *ngIf="isLoading && testCases.length === 0" class="small-spinner">
+                    Loading test cases...
+                </div>
+            
+                <div *ngIf="!isLoading && testCases.length === 0" class="no-data">
+                    No test cases found for this problem.
+                </div>
+            
+                <div *ngFor="let test of testCases; let i = index" class="test-case-item">
+                    <div class="case-header">Case {{ i + 1 }}</div>
+                    <div class="case-details">
+                        <div class="io-row">
+                            <strong>Input:</strong>
+                            <code>{{ test.inputData || 'N/A' }}</code>
+                        </div>
+                        <div class="io-row">
+                            <strong>Expected:</strong>
+                            <code>{{ test.expectedOutput || 'N/A' }}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Editor & Console -->
+    <div class="side-panel editor-section">
+
+        <div class="editor-toolbar">
+            <div class="left-tools">
+                <select class="custom-select" [(ngModel)]="selectedLanguage" (change)="onLanguageChange($event)">
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                    <option value="python">Python</option>
+                </select>
+            </div>
+            <div class="right-tools">
+                <button class="btn run-btn" (click)="runCode()" [disabled]="isLoading">
+                    <span *ngIf="!isLoading">▶ Run Code</span>
+                    <span *ngIf="isLoading">Running...</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="code-editor-container">
+            <textarea class="main-textarea" [(ngModel)]="code" spellcheck="false">
+      </textarea>
+        </div>
+
+        <!-- Console / Results Panel -->
+        <div class="console-panel">
+            <div class="console-header">
+                <span>Execution Results</span>
+                <span class="marks-display" *ngIf="executionResult">Marks: {{ executionResult.marks }}</span>
+            </div>
+
+            <div class="console-body">
+                <!-- Initial State -->
+                <div *ngIf="!executionResult && !isLoading" class="empty-console">
+                    Output will appear here after execution.
+                </div>
+
+                <!-- Loading State -->
+                <div *ngIf="isLoading" class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Compiling and running against test cases...</p>
+                </div>
+
+                <!-- Results State -->
+                <div *ngIf="executionResult" class="results-container">
+                    <div *ngFor="let result of executionResult.testCases" class="result-item">
+                        <div class="result-text"
+                            [ngClass]="{'pass-text': result.includes('Passed'), 'fail-text': result.includes('Failed')}">
+                            {{ result }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

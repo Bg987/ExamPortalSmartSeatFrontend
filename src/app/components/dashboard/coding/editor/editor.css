@@ -1,0 +1,238 @@
+.editor-page-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #0f0f0f;
+    color: #e0e0e0;
+    overflow: hidden;
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* LEFT SIDE */
+.problem-description {
+    flex: 1;
+    border-right: 2px solid #2a2a2a;
+    background-color: #1a1a1a;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.pane-header h2 {
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+
+.tag {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+.id-tag {
+    background: #333;
+    color: #aaa;
+}
+
+.status-tag.assigned {
+    background: #005fb8;
+    color: white;
+}
+
+.description-text {
+    line-height: 1.6;
+    color: #ccc;
+    margin-top: 15px;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 20px 0;
+}
+
+.test-case-item {
+    background: #252525;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-left: 4px solid #444;
+}
+
+.case-header {
+    font-weight: bold;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.io-row code {
+    background: #000;
+    color: #9cdcfe;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* RIGHT SIDE */
+.editor-section {
+    flex: 1.5;
+    background-color: #1e1e1e;
+}
+
+.editor-toolbar {
+    height: 50px;
+    background: #2d2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border-bottom: 1px solid #333;
+}
+
+.custom-select {
+    background: #3c3c3c;
+    color: white;
+    border: 1px solid #555;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.run-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.run-btn:hover {
+    background: #218838;
+}
+
+.code-editor-container {
+    flex: 2;
+}
+
+.main-textarea {
+    width: 100%;
+    height: 100%;
+    background: #1e1e1e;
+    color: #dcdcdc;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    padding: 20px;
+    border: none;
+    resize: none;
+    outline: none;
+}
+
+/* CONSOLE */
+.console-panel {
+    flex: 1;
+    background: #000;
+    border-top: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+}
+
+.console-header {
+    background: #252526;
+    padding: 5px 15px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.console-body {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.test-result-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #111;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.pass {
+    color: #4ef037;
+}
+
+.fail {
+    color: #f44747;
+}
+
+.red {
+    color: #f44747;
+}
+
+.green {
+    color: #4ef037;
+}
+/* Marks Style */
+.marks-display {
+    float: right;
+    background: #f1c40f;
+    color: #000;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* Console Text Colors */
+.result-item {
+    padding: 8px 12px;
+    background: #111;
+    border-bottom: 1px solid #222;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+}
+
+.pass-text {
+    color: #2ecc71;
+    /* Emerald Green */
+    border-left: 4px solid #2ecc71;
+}
+
+.fail-text {
+    color: #e74c3c;
+    /* Alizarin Red */
+    border-left: 4px solid #e74c3c;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #007acc;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

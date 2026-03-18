@@ -1,0 +1,191 @@
+/* Container and Header */
+.exam-container {
+    padding: 40px;
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* Grid Layout */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Base Card */
+.exam-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.exam-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Today Design: Blue Border */
+.status-today {
+    border: 2px solid #3498db;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+/* 30 Minutes Design: Red/Orange Alert */
+.status-soon {
+    border: 2px solid #e74c3c;
+    background: #fffafa;
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
+    animation: border-glow 2s infinite;
+}
+
+@keyframes border-glow {
+    0% {
+        border-color: #e74c3c;
+    }
+
+    50% {
+        border-color: #f1c40f;
+    }
+
+    100% {
+        border-color: #e74c3c;
+    }
+}
+
+/* Ribbon Styles */
+.status-ribbon {
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #f1f1f1;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-soon .status-ribbon {
+    background: #e74c3c;
+    color: white;
+}
+
+.status-today .status-ribbon {
+    background: #3498db;
+    color: white;
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.card-body h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.15rem;
+    line-height: 1.4;
+    height: 3.2em;
+    /* Keeps titles aligned */
+    overflow: hidden;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Card Footer and Button */
+.card-footer {
+    padding: 15px 20px 20px;
+    background: #fcfcfc;
+    border-top: 1px solid #f1f1f1;
+}
+
+.start-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #34495e;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.start-btn:hover {
+    background: #2c3e50;
+}
+
+/* Pulse Animation for "Enter Now" Button */
+.pulse {
+    animation: pulse-animation 1.5s infinite;
+    background: #e74c3c !important;
+}
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+    }
+
+    70% {
+        transform: scale(1.03);
+        box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}
+
+/* Utilities */
+.loader {
+    text-align: center;
+    padding: 50px;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.no-exams {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    background: #fff;
+    border-radius: 12px;
+    color: #95a5a6;
+    border: 2px dashed #e0e0e0;
+}
