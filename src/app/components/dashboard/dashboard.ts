@@ -44,7 +44,7 @@ export class Dashboard {
   // }
 
     checkSystem2() {
-      this.http.get(`${environment.apiUrl}/api/exam/health`, { 
+      this.http.get(`${environment.apiUrl}/exam/health`, { 
         responseType: 'text',//tells Angular NOT to parse it as JSON
         withCredentials: true,
         })

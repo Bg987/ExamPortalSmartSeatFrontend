@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,RouterModule } from '@angular/router';
 import { environment } from '../../../../environment';
 
 @Component({
   selector: 'app-get-exam',
   standalone: true,
-  imports: [CommonModule, HttpClientModule], 
+  imports: [CommonModule, HttpClientModule,RouterModule], 
   templateUrl: './get-exam.html',
   styleUrl: './get-exam.css',
 })
@@ -42,7 +42,7 @@ export class GetExam implements OnInit, OnDestroy {
 
   fetchExams() {
     this.isLoading = true;
-    this.http.get<any[]>(`${this.url}/api/ExamStudent/getStudentIncomplteExam`, {
+    this.http.get<any[]>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
     })
     .subscribe({
@@ -89,6 +89,6 @@ export class GetExam implements OnInit, OnDestroy {
   }
 
   enterExam(examId: number) {
-    this.router.navigate(['/editor', examId]);
+    this.router.navigate(['/Exam', examId]);
   }
 }
