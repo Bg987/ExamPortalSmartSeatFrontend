@@ -4,7 +4,7 @@ import { Dashboard } from '../app/components/dashboard/dashboard';
 import { ShowProblem } from './components/dashboard/coding/show-problem/show-problem';
 import { Editor } from './components/dashboard/coding/editor/editor';
 import { GetExam } from './components/dashboard/exam/get-exam/get-exam';
-import { MainExam } from './main-exam/main-exam';
+import { MainExam } from './components/dashboard/exam/main-exam/main-exam';
 
 
 export const routes: Routes = [

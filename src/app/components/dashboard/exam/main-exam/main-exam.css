@@ -1,0 +1,273 @@
+/* --- Layout --- */
+.container-fluid {
+    max-width: 1400px;
+    margin: auto;
+}
+
+.exam-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* --- Sidebar --- */
+.exam-sidebar {
+    width: 300px;
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* --- Timer --- */
+.timer-card {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.timer-display {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* --- Palette --- */
+.palette-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.palette-btn,.flag-btn {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+/* States */
+.unattempted {
+    background: #f1f5f9;
+}
+
+.attempted {
+    background: #10b981;
+    color: white;
+}
+
+.flagged {
+    background: orange;
+    color: white;
+}
+
+.current {
+    background: #3b82f6;
+    color: white;
+}
+
+/* --- Right Content --- */
+.exam-content {
+    flex: 1;
+}
+
+.question-container {
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 40px);
+}
+
+/* Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Body */
+.card-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Options */
+.option-row {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.option-row.active {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+/* Footer */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-top: 1px solid #eee;
+}
+
+.center-actions {
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-white {
+    background: white;
+    border: 1px solid #ddd;
+}
+
+/* Legend */
+.legend-section {
+    margin-top: 20px;
+}
+
+.legend-item {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.box {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .exam-layout {
+        flex-direction: column;
+    }
+
+    .exam-sidebar {
+        width: 100%;
+    }
+
+    .question-container {
+        height: auto;
+    }
+}
+
+.sync-indicator-container {
+    transition: all 0.4s ease;
+}
+
+.status-pill {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    min-height: 40px;
+    transition: all 0.3s ease;
+}
+
+/* Success State Colors */
+.status-text {
+    font-size: 0.8rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Error State Colors */
+.sync-error .status-pill {
+    background: #fff1f2;
+    border-color: #fecaca;
+}
+
+.sync-error .status-text {
+    color: #be123c;
+}
+
+/* Pulse Animation Logic */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.pulse-green {
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+.pulse-red {
+    background: #ef4444;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+@keyframes pulse-red {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}

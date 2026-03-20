@@ -1,20 +1,20 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Router,RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { environment } from '../../../../environment';
 
 @Component({
   selector: 'app-get-exam',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,RouterModule], 
+  imports: [CommonModule, HttpClientModule, RouterModule],
   templateUrl: './get-exam.html',
   styleUrl: './get-exam.css',
 })
 export class GetExam implements OnInit, OnDestroy {
   incompleteExams: any[] = [];
   isLoading: boolean = false;
-  url: String = environment.apiUrl;
+  url: string = environment.apiUrl;
   
   currentTime: Date = new Date();
   private timerId: any;
@@ -27,7 +27,7 @@ export class GetExam implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchExams();
-    // Refresh the clock every minute to update "Starting Soon" status
+    // Refresh the clock every minute
     this.timerId = setInterval(() => {
       this.currentTime = new Date();
       this.cdr.detectChanges();
@@ -42,17 +42,20 @@ export class GetExam implements OnInit, OnDestroy {
 
   fetchExams() {
     this.isLoading = true;
-    this.http.get<any[]>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
+    this.http.get<any>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
     })
     .subscribe({
       next: (data) => {
-        this.incompleteExams = data;
+        if (data.enrNumber) {
+          localStorage.setItem('enrollmentNo', data.enrNumber);
+        }
+        this.incompleteExams = data.exams || []; 
         this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error("Check if Port 8081 is running!", err);
+        console.error("API Error:", err);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -60,35 +63,46 @@ export class GetExam implements OnInit, OnDestroy {
   }
 
   /**
-   * Categorizes exam based on Date and Time
-   * SOON: Today and starts within 30 minutes
-   * TODAY: Scheduled for today but > 30 mins away
-   * UPCOMING: Scheduled for a future date
+   * Logic: 
+   * - SOON: Within 25 mins of start OR exam is currently running
+   * - TODAY: Scheduled for today but more than 25 mins away
+   * - UPCOMING: Future date
    */
-  getExamStatus(exam: any): 'SOON' | 'TODAY' | 'UPCOMING' {
-    if (!exam.Date || !exam.time) return 'UPCOMING';
+getExamStatus(exam: any): 'SOON' | 'TODAY' | 'UPCOMING' {
+    // 1. Combine Date (2026-03-20) and time (13:10:00)
+    // Result: "2026-03-20T13:10:00"
+    const examDateTimeStr = `${exam.Date}T${exam.time}`;
+    const examStartTime = new Date(examDateTimeStr);
 
-    // Create a Date object from the exam Date (YYYY-MM-DD) and Time (HH:mm:ss)
-    const examDateTime = new Date(`${exam.Date}T${exam.time}`);
-    
-    const diffInMs = examDateTime.getTime() - this.currentTime.getTime();
+    // 2. Calculate the difference in minutes
+    const diffInMs = examStartTime.getTime() - this.currentTime.getTime();
     const diffInMins = diffInMs / (1000 * 60);
 
-    // Is it today?
-    const isToday = new Date(exam.Date).toDateString() === this.currentTime.toDateString();
+    // DEBUG LOGS (Check these in F12 console)
+    console.log(`Exam: ${exam.examName} | Diff: ${diffInMins.toFixed(1)} mins`);
+
+    // 3. Logic based on your current time (13:15) and exam time (13:10)
+    // Since 13:15 is AFTER 13:10, diffInMins will be -5.
+    
+    const isToday = examStartTime.toDateString() === this.currentTime.toDateString();
 
     if (isToday) {
-      // If today and starts within 30 minutes (but hasn't ended)
-      if (diffInMins <= 30 && diffInMins >= -(exam.duration)) { // Assuming 2 hour exam duration
-        return 'SOON';
-      }
-      return 'TODAY';
+         if (diffInMins <= 2 && diffInMins >= -(exam.duration)) {
+            return 'SOON';
+        }
+        return 'TODAY';
     }
 
     return 'UPCOMING';
-  }
+}
 
-  enterExam(examId: number) {
-    this.router.navigate(['/Exam', examId]);
+  // PASSING DATA VIA ROUTER STATE
+  enterExam(exam: any) {
+    this.router.navigate(['/Exam', exam.id], {
+      state: { 
+        startTime: exam.time, 
+        duration: exam.duration 
+      }
+    });
   }
 }

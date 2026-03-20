@@ -11,7 +11,7 @@
          }">
 
             <div class="status-ribbon">
-                <span *ngIf="getExamStatus(exam) === 'SOON'">⚠️ STARTING SOON</span>
+                <span *ngIf="getExamStatus(exam) === 'SOON'">⚠️ STARTED</span>
                 <span *ngIf="getExamStatus(exam) === 'TODAY'">📅 TODAY</span>
                 <span *ngIf="getExamStatus(exam) === 'UPCOMING'">🗓️ UPCOMING</span>
             </div>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="card-footer">
-                <button class="start-btn" [class.pulse]="getExamStatus(exam) === 'SOON'" (click)="enterExam(exam.id)">
+                <button class="start-btn" [class.pulse]="getExamStatus(exam) === 'SOON'" *ngIf="getExamStatus(exam) === 'SOON'" (click)="enterExam(exam)">
                     {{ getExamStatus(exam) === 'SOON' ? 'Enter Now' : 'View Details' }}
                 </button>
             </div>

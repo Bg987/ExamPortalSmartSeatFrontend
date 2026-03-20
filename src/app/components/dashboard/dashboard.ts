@@ -88,7 +88,7 @@ export class Dashboard {
 private finalizeLogout() {
   // Remove the token
   localStorage.removeItem('token');
-  
+  localStorage.removeItem("enrollmentNo");
   // Reset your backend status variables
   this.isBackendReady1 = null;
   this.isBackendReady2 = null;
