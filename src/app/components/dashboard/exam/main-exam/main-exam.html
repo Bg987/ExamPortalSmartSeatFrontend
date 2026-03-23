@@ -3,17 +3,17 @@
     <div *ngIf="isLoading" class="loading-overlay">
         <div class="text-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
-            <p class="mt-3 fw-bold text-secondary">Securing your session...</p>
+            <p class="mt-3 fw-bold text-secondary">Processing... Please do not refresh.</p>
         </div>
     </div>
 
-    <div *ngIf="!isVerified && !isLoading" class="password-screen animate__animated animate__fadeIn">
+    <div *ngIf="!isVerified" class="password-screen animate__animated animate__fadeIn">
         <div class="card password-card shadow-lg border-0 mx-auto">
             <div class="card-body p-5 text-center">
                 <div class="lock-icon-wrapper mb-4">
                     <i class="bi bi-shield-lock-fill text-primary"></i>
                 </div>
-                <h3 class="fw-bold mb-2">Access Portal</h3>
+                <h3 class="fw-bold mb-2">Access Exam</h3>
                 <p class="text-muted mb-4">Please enter the 6-digit exam password to begin your session.</p>
 
                 <div class="mb-4">
@@ -21,7 +21,8 @@
                         class="form-control password-input text-center" placeholder="······" maxlength="6">
                 </div>
 
-                <button (click)="verifyExam()" class="btn btn-primary btn-lg w-100 shadow-sm fw-bold">
+                <button (click)="verifyExam()" [disabled]="isLoading"
+                    class="btn btn-primary btn-lg w-100 shadow-sm fw-bold">
                     Verify & Start Exam
                 </button>
 
@@ -32,36 +33,34 @@
         </div>
     </div>
 
-<div class="sync-indicator-container mb-3" [class.sync-error]="isOffline">
-    <div class="d-flex align-items-center justify-content-center p-2 rounded-3 shadow-sm status-pill">
+    <div class="sync-indicator-container mb-3" *ngIf="isVerified" [class.sync-error]="isOffline">
+        <div class="d-flex align-items-center justify-content-center p-2 rounded-3 shadow-sm status-pill">
+            <ng-container *ngIf="!isOffline">
+                <div class="status-dot pulse-green me-2"></div>
+                <span class="status-text fw-bold">Cloud Synced</span>
+                <i class="bi bi-cloud-check-fill ms-2 text-success"></i>
+            </ng-container>
 
-        <ng-container *ngIf="!isOffline">
-            <div class="status-dot pulse-green me-2"></div>
-            <span class="status-text fw-bold">Data Synced</span>
-            <i class="bi bi-cloud-check-fill ms-2 text-success"></i>
-        </ng-container>
-
-        <ng-container *ngIf="isOffline">
-            <div class="status-dot pulse-red me-2"></div>
-            <span class="status-text fw-bold">Local Storage Mode</span>
-            <div class="ms-2 spinner-grow spinner-grow-sm text-danger" role="status"></div>
-        </ng-container>
-
+            <ng-container *ngIf="isOffline">
+                <div class="status-dot pulse-red me-2"></div>
+                <span class="status-text fw-bold">Offline: Saving Locally</span>
+                <div class="ms-2 spinner-grow spinner-grow-sm text-danger" role="status"></div>
+            </ng-container>
+        </div>
     </div>
-</div>
 
     <div *ngIf="isVerified && examData && !isLoading" class="exam-layout animate__animated animate__fadeIn">
+
         <div class="exam-sidebar">
             <div class="sticky-sidebar">
-
-                <div class="timer-card" [class.timer-low]="remainingTime.length < 6 && remainingTime.startsWith('00:')">
+                <div class="timer-card" [class.timer-low]="remainingTime.startsWith('00:0')">
                     <span class="timer-label">Time Remaining</span>
                     <div class="timer-display">{{ remainingTime }}</div>
                 </div>
 
                 <div class="palette-card shadow-sm">
                     <div class="palette-header">
-                        <h6 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Navigation</h6>
+                        <h6 class="mb-0 fw-bold"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Question Palette</h6>
                     </div>
                     <div class="card-body p-3">
                         <div class="palette-grid">
@@ -73,7 +72,7 @@
 
                         <div class="legend-section mt-4 pt-3 border-top">
                             <div class="legend-item"><span class="box attempted"></span> Attempted</div>
-                            <div class="legend-item"><span class="box flagged"></span> Flagged</div>
+                            <div class="legend-item"><span class="box flagged"></span> Review Later</div>
                             <div class="legend-item"><span class="box current"></span> Current</div>
                             <div class="legend-item"><span class="box unattempted"></span> Not Visited</div>
                         </div>
@@ -91,7 +90,7 @@
                         <span class="text-muted fw-normal ms-2">/ {{ examData.questions.length }}</span>
                     </h5>
                     <span class="badge bg-soft-primary text-primary px-3 py-2 border border-primary border-opacity-25">
-                        {{ examData.subjectName || 'Engineering Exam' }}
+                        {{ examData.subjectName || 'IT Engineering Exam' }}
                     </span>
                 </div>
 
@@ -112,6 +111,7 @@
                 </div>
 
                 <div class="question-footer d-flex justify-content-between align-items-center p-4">
+
                     <button (click)="currentIndex = currentIndex - 1" [disabled]="currentIndex === 0"
                         class="btn btn-light-outline px-4">
                         <i class="bi bi-arrow-left me-2"></i> Previous
@@ -122,7 +122,7 @@
                             [ngClass]="flaggedQuestions.has(currentIndex) ? 'text-warning' : 'text-secondary'">
                             <i class="bi me-2"
                                 [ngClass]="flaggedQuestions.has(currentIndex) ? 'bi-flag-fill' : 'bi-flag'"></i>
-                            {{ flaggedQuestions.has(currentIndex) ? 'Unmark' : 'Review Later' }}
+                            {{ flaggedQuestions.has(currentIndex) ? 'Flagged' : 'Mark for Review' }}
                         </button>
                     </div>
 
@@ -138,6 +138,7 @@
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
 

@@ -29,22 +29,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // If backend returns 401 (Unauthorized), the token is likely dead
       if (error.status === 401) {
         console.warn("Unauthorized! Clearing session...");
+        alert("Access Restricted. This exam requires Safe Exam Browser. Please relaunch the application.");
+        //1. Clear local session
+        localStorage.clear();
 
-        // 1. Clear local session
-        //localStorage.clear();
-
-        // 2. Call your friend's logout API to be safe
-        // Note: Using apiUrl2 since that's where the compiler/auth lives
-        // http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
-        //   responseType: 'text',
-        //   withCredentials : true,
-        //  })
-        //   .subscribe({
-        //     next: () => console.log("Backend session invalidated"),
-        //     error: (err) => console.error("Could not reach logout API", err)
-        //   });
-        // // 3. Force redirect to Login
-        // router.navigate(['/login']);
+        //2. Call your friend's logout API to be safe
+        //Note: Using apiUrl2 since that's where the compiler/auth lives
+        http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
+          responseType: 'text',
+          withCredentials : true,
+         })
+          .subscribe({
+            next: () => console.log("Backend session invalidated"),
+            error: (err) => console.error("Could not reach logout API", err)
+          });
+        // 3. Force redirect to Login
+        router.navigate(['/login']);
       }
 
       return throwError(() => error);
