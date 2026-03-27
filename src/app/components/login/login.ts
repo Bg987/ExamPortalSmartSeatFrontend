@@ -85,7 +85,7 @@ export class LoginComponent implements AfterViewInit {
       error: (err) => {
         this.isVerifying = false;
         let error = JSON.stringify(err);
-        alert(JSON.stringify(err));
+        //alert(JSON.stringify(err));
         console.log(err.error.message);
       // err.error will now also follow the { status: 'error', message: '...' } structure
         this.error = err.error?.message || "Connection lost";
