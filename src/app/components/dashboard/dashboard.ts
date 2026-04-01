@@ -11,6 +11,7 @@ import { environment } from '../../environment';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
+  
 export class Dashboard {
   isBackendReady1 :any = false;
   isBackendReady2: any = false;
@@ -20,28 +21,9 @@ export class Dashboard {
   private cdr :ChangeDetectorRef) { }
 
   ngOnInit() {
-    //this.checkSystem1();
     this.checkSystem2();
   }
 
-  // checkSystem1() {
-  //   // Ping your friend's backend (or your own) to show "Online" status
-  //   this.http.get(`${environment.apiUrl2}/student/health`, {
-  //     responseType: 'text'
-  //   }).subscribe({
-  //     next: () => {
-  //       this.isBackendReady1 = true;
-  //       this.cdr.detectChanges();
-  //     },
-  //     error: () => {
-  //           this.isBackendReady1 = false;
-  //       this.cdr.detectChanges();
-  //           setTimeout(() => {
-  //         this.checkSystem1();
-  //       }, 2000);
-  //     }
-  //   });
-  // }
 
     checkSystem2() {
       this.http.get(`${environment.apiUrl}/exam/health`, { 
@@ -56,9 +38,7 @@ export class Dashboard {
           error: () => {
             this.isBackendReady2 = false;
             this.cdr.detectChanges();
-                  setTimeout(() => {
-                    this.checkSystem2();
-                  }, 2000);
+                  // 
           }
         });
   }
@@ -67,7 +47,7 @@ export class Dashboard {
     this.isLoggingOut = true;
   // 1. Call the backend logout endpoint first
   // We use apiUrl2 since you mentioned it's on your friend's server
-    this.http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
+    this.http.post(`${environment.apiUrl}/Auth/logout`, {}, {
       withCredentials: true,
       responseType: 'text'
     })
@@ -94,9 +74,6 @@ private finalizeLogout() {
   this.isBackendReady2 = null;
   // Redirect to login page
   this.isLoggingOut = false;
-  this.router.navigate(['/login']);
+  this.router.navigate(['/']);
 }
-  navigateTo(path: string) {
-    this.router.navigate([`/${path}`]);
-  }
 }

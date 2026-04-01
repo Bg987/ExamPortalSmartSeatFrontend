@@ -83,6 +83,7 @@ export class LoginComponent implements AfterViewInit {
         this.cd.detectChanges();
     },
       error: (err) => {
+        //alert(JSON.stringify(err))
         this.isVerifying = false;
         let error = JSON.stringify(err);
         //alert(JSON.stringify(err));

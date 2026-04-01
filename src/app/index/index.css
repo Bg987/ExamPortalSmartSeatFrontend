@@ -1,0 +1,73 @@
+.welcome-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  font-family: 'Inter', sans-serif;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  max-width: 500px;
+  text-align: center;
+}
+
+.shield-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  color: #1e3c72;
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.instructions {
+  text-align: left;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  border-left: 4px solid #e74c3c;
+}
+
+.instructions h3 {
+  margin-top: 0;
+  color: #e74c3c;
+}
+
+.instructions ul {
+  padding-left: 1.2rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.btn-start {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+u{
+  color : red;
+  font-weight : bolder;
+}
+
+.btn-start:hover {
+  background: #2ecc71;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}

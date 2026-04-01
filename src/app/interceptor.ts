@@ -2,7 +2,7 @@ import { HttpInterceptorFn, HttpErrorResponse, HttpClient } from '@angular/commo
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { environment } from './environment'; // Adjust path if needed
+import { environment } from './environment'; 
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
@@ -28,8 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       
       // If backend returns 401 (Unauthorized), the token is likely dead
       if (error.status === 401) {
-        console.warn("Unauthorized! Clearing session...");
-        alert("Access Restricted. This exam requires Safe Exam Browser. Please relaunch the application.");
+        alert("Unauthorized! logout.....");
         //1. Clear local session
         localStorage.clear();
 
@@ -44,7 +43,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             error: (err) => console.error("Could not reach logout API", err)
           });
         // 3. Force redirect to Login
-        router.navigate(['/login']);
+        router.navigate(['/']);
       }
 
       return throwError(() => error);
