@@ -60,6 +60,7 @@ export class GetExam implements OnInit, OnDestroy {
     })
     .subscribe({
       next: (data) => {
+        alert(JSON.stringify(data));
         if (data.enrNumber) {
           localStorage.setItem('enrollmentNo', data.enrNumber);
         }
@@ -68,6 +69,7 @@ export class GetExam implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
+        alert(JSON.stringify(err))
         console.error("API Error:", err);
         this.isLoading = false;
         this.cdr.detectChanges();
