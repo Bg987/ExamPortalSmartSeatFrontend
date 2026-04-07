@@ -52,10 +52,15 @@ export class GetExam implements OnInit, OnDestroy {
   if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
       // This is where you 'put' the key from the browser into a variable
       sebKey = SafeExamBrowser.security.configKey; 
-  }
+    }
+    
+    const headers = {
+    'X-SafeExamBrowser-ConfigKeyhash': sebKey
+  };
   alert("sebkey = "+sebKey);
     this.http.get<any>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
+      headers: headers
     })
     .subscribe({
       next: (data) => {
