@@ -1,3 +1,7 @@
+declare var SafeExamBrowser: any;
+
+
+
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -44,6 +48,12 @@ export class GetExam implements OnInit, OnDestroy {
   fetchExams() {
     this.isLoading = true;
     alert("call api");
+    let sebKey = "";
+  if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
+      // This is where you 'put' the key from the browser into a variable
+      sebKey = SafeExamBrowser.security.configKey; 
+  }
+  alert("sebkey = "+sebKey);
     this.http.get<any>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
     })
