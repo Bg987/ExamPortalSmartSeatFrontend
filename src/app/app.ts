@@ -32,7 +32,7 @@ export class App implements OnInit {
   @HostListener('window:blur')
   onBlur() {
     // 1. Logic Guard: Only secure pages (Login/Exam), not Index ('/')
-    if (this.router.url === '/') return;
+    if (this.router.url === '/'||this.router.url === '/login') return;
 
     // 2. Logic Guard: Don't trigger if an alert is already open
     if (this.security.isHandlingViolation) return;

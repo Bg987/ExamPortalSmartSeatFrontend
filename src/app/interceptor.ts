@@ -26,9 +26,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
       
-      // If backend returns 401 (Unauthorized), the token is likely dead
+      // If backend returns 401 (Unauthorized), the toked
       if (error.status === 401) {
-        alert("Unauthorized! logout.....");
+        //alert("Unauthorized! logout.....");
         //1. Clear local session
         localStorage.clear();
 

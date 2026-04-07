@@ -52,11 +52,13 @@ export class GetExam implements OnInit, OnDestroy {
         }
         this.incompleteExams = data.exams || []; 
         this.isLoading = false;
+        console.log(JSON.stringify(data));
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("API Error:", err);
         this.isLoading = false;
+        console.log()
         this.cdr.detectChanges();
       }
     });
