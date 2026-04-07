@@ -7,6 +7,7 @@ import { GetExam } from './components/dashboard/exam/get-exam/get-exam';
 import { MainExam } from './components/dashboard/exam/main-exam/main-exam';
 import { Index } from './index/index';
 
+
 export const routes: Routes = [
   { path: '', component:Index },
   { path: 'login', component: LoginComponent },

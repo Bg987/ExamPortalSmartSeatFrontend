@@ -1,4 +1,4 @@
-let production = true;
+let production = false;
 export const environment = {
   //exaxm portal server
   apiUrl: production ?'https://proxy-0xaq.onrender.com/api2':"http://localhost:8081/api",
