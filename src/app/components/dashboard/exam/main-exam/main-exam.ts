@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environment';
 import { timeout, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+
 declare var SafeExamBrowser: any;
+
 @Component({
   selector: 'app-main-exam',
   standalone: true,
@@ -25,12 +27,13 @@ export class MainExam implements OnInit, OnDestroy {
   password: string = '';
   currentIndex: number = 0;
   errorMessage: string = '';
-  let sebKey = "";
+  sebKey: string = ""; // Declared as class property
+
   // Timer & Sync
   remainingTime: string = '00:00';
   private timerInterval: any;
   private syncTimer: any; 
-  private endTimeMs: number = 0; // Changed to number for reliable math
+  private endTimeMs: number = 0;
 
   userAnswers: { [key: string]: string } = {};
   flaggedQuestions: Set<number> = new Set();
@@ -46,11 +49,9 @@ export class MainExam implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    
     if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
-      sebKey = SafeExamBrowser.security.configKey; }
-  
-  };
+      this.sebKey = SafeExamBrowser.security.configKey; 
+    }
     this.examId = this.route.snapshot.paramMap.get('id') || '';
   }
 
@@ -64,12 +65,14 @@ export class MainExam implements OnInit, OnDestroy {
       this.errorMessage = "Enter valid 6-digit password.";
       return;
     }
-    const headers = {
-    'X-SafeExamBrowser-ConfigKeyhash': sebKey;
-  }
+
+    const headers = new HttpHeaders({
+      'X-SafeExamBrowser-ConfigKeyhash': this.sebKey
+    });
+
     this.isLoading = true;
     const url = `${environment.apiUrl}/exam/verify/${this.examId}`;
-    this.http.post<any>(url, { password: this.password }, { withCredentials: true,headers: headers })
+    this.http.post<any>(url, { password: this.password }, { withCredentials: true, headers: headers })
       .subscribe({
         next: (res) => this.handleEntrySuccess(res.data),
         error: (err) => {
@@ -81,27 +84,21 @@ export class MainExam implements OnInit, OnDestroy {
   }
 
   private handleEntrySuccess(data: any) {
-    // 1. Sync previous answers
     if (data.answers) {
         this.userAnswers = data.answers;
     }
     this.loadProgress(); 
 
-    // 2. PARSE THE HH:mm:ss FORMAT CORRECTLY
     const now = new Date();
     const todayStr = now.getFullYear() + '-' + 
                     String(now.getMonth() + 1).padStart(2, '0') + '-' + 
                     String(now.getDate()).padStart(2, '0');
     
-    // Combine today's date with the backend's startTime (HH:mm:ss)
     const fullStartStr = `${todayStr}T${data.startTime}`;
     const startTimeMs = new Date(fullStartStr).getTime();
-
-    // Calculate End Time: StartTime + (Duration * 60000ms)
     const durationMinutes = data.duration || 2; 
     this.endTimeMs = startTimeMs + (durationMinutes * 60000);
 
-    // 3. UI and Questions Setup
     const studentId = localStorage.getItem('enrollmentNo') || 'anon';
     const seed = `${this.examId}_${studentId}`;
 
@@ -115,14 +112,12 @@ export class MainExam implements OnInit, OnDestroy {
     this.isVerified = true;
     this.isLoading = false;
     
-    this.startTimer(); // Now uses this.endTimeMs internally
+    this.startTimer();
     this.cdr.detectChanges();
   }
 
-  // --- TIMER UTILS ---
   private startTimer() {
     this.stopTimer();
-
     this.timerInterval = setInterval(() => {
         const now = new Date().getTime();
         const diff = this.endTimeMs - now;
@@ -130,7 +125,7 @@ export class MainExam implements OnInit, OnDestroy {
         if (diff <= 0) {
             this.remainingTime = '00:00';
             this.stopTimer();
-            this.submitFinal(true); // TRIGGER AUTO-SUBMIT
+            this.submitFinal(true);
             return;
         }
 
@@ -138,16 +133,13 @@ export class MainExam implements OnInit, OnDestroy {
         const m = Math.floor((diff / 60000) % 60);
         const s = Math.floor((diff / 1000) % 60);
 
-        // Update the display string
         this.remainingTime = `${h > 0 ? h + ':' : ''}${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
-        
         this.cdr.detectChanges();
     }, 1000);
   }
 
   private stopTimer() { if (this.timerInterval) clearInterval(this.timerInterval); }
 
-  // --- SUBMIT LOGIC ---
   submitFinal(isAuto: boolean = false) {
     this.stopTimer();
 
@@ -169,9 +161,12 @@ export class MainExam implements OnInit, OnDestroy {
         answers: this.userAnswers,
         isAutoSubmitted: isAuto 
     };
-    const headers = {
-    'X-SafeExamBrowser-ConfigKeyhash': sebKey
-    this.http.post(`${environment.apiUrl}/exam/submit`, payload, { withCredentials: true ,headers: headers})
+
+    const headers = new HttpHeaders({
+      'X-SafeExamBrowser-ConfigKeyhash': this.sebKey
+    });
+
+    this.http.post(`${environment.apiUrl}/exam/submit`, payload, { withCredentials: true, headers: headers })
       .pipe(timeout(20000))
       .subscribe({
         next: () => {
@@ -187,7 +182,6 @@ export class MainExam implements OnInit, OnDestroy {
       });
   }
 
-  // --- REMAINING UTILS ---
   selectOption(option: string) {
     const currentQ = this.examData.questions[this.currentIndex];
     this.userAnswers[currentQ.text] = option; 
@@ -198,11 +192,11 @@ export class MainExam implements OnInit, OnDestroy {
   }
 
   syncWithServer() {
-    const headers = {
-    'X-SafeExamBrowser-ConfigKeyhash': sebKey
-  };
+    const headers = new HttpHeaders({
+      'X-SafeExamBrowser-ConfigKeyhash': this.sebKey
+    });
     const payload = { examId: this.examId, answers: this.userAnswers };
-    this.http.post(`${environment.apiUrl}/exam/sync`, payload, { withCredentials: true,headers: headers })
+    this.http.post(`${environment.apiUrl}/exam/sync`, payload, { withCredentials: true, headers: headers })
       .pipe(timeout(5000), catchError(err => throwError(() => err)))
       .subscribe({
         next: () => { this.isOffline = false; this.cdr.detectChanges(); },
