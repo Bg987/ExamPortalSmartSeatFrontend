@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environment';
 import { timeout, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-
+declare var SafeExamBrowser: any;
 @Component({
   selector: 'app-main-exam',
   standalone: true,
@@ -25,7 +25,7 @@ export class MainExam implements OnInit, OnDestroy {
   password: string = '';
   currentIndex: number = 0;
   errorMessage: string = '';
-
+  let sebKey = "";
   // Timer & Sync
   remainingTime: string = '00:00';
   private timerInterval: any;
@@ -46,6 +46,11 @@ export class MainExam implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    
+    if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
+      sebKey = SafeExamBrowser.security.configKey; }
+  
+  };
     this.examId = this.route.snapshot.paramMap.get('id') || '';
   }
 
@@ -59,9 +64,12 @@ export class MainExam implements OnInit, OnDestroy {
       this.errorMessage = "Enter valid 6-digit password.";
       return;
     }
+    const headers = {
+    'X-SafeExamBrowser-ConfigKeyhash': sebKey;
+  }
     this.isLoading = true;
     const url = `${environment.apiUrl}/exam/verify/${this.examId}`;
-    this.http.post<any>(url, { password: this.password }, { withCredentials: true })
+    this.http.post<any>(url, { password: this.password }, { withCredentials: true,headers: headers })
       .subscribe({
         next: (res) => this.handleEntrySuccess(res.data),
         error: (err) => {
@@ -161,8 +169,9 @@ export class MainExam implements OnInit, OnDestroy {
         answers: this.userAnswers,
         isAutoSubmitted: isAuto 
     };
-
-    this.http.post(`${environment.apiUrl}/exam/submit`, payload, { withCredentials: true })
+    const headers = {
+    'X-SafeExamBrowser-ConfigKeyhash': sebKey
+    this.http.post(`${environment.apiUrl}/exam/submit`, payload, { withCredentials: true ,headers: headers})
       .pipe(timeout(20000))
       .subscribe({
         next: () => {
@@ -189,8 +198,11 @@ export class MainExam implements OnInit, OnDestroy {
   }
 
   syncWithServer() {
+    const headers = {
+    'X-SafeExamBrowser-ConfigKeyhash': sebKey
+  };
     const payload = { examId: this.examId, answers: this.userAnswers };
-    this.http.post(`${environment.apiUrl}/exam/sync`, payload, { withCredentials: true })
+    this.http.post(`${environment.apiUrl}/exam/sync`, payload, { withCredentials: true,headers: headers })
       .pipe(timeout(5000), catchError(err => throwError(() => err)))
       .subscribe({
         next: () => { this.isOffline = false; this.cdr.detectChanges(); },

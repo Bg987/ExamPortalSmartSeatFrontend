@@ -31,7 +31,6 @@ export class GetExam implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchExams();
-    alert("load compoennt");
     // Refresh the clock every minute
     this.timerId = setInterval(() => {
       this.currentTime = new Date();
@@ -47,17 +46,14 @@ export class GetExam implements OnInit, OnDestroy {
 
   fetchExams() {
     this.isLoading = true;
-    alert("call api");
     let sebKey = "";
-  if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
-      // This is where you 'put' the key from the browser into a variable
-      sebKey = SafeExamBrowser.security.configKey; 
-    }
+    if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
+      sebKey = SafeExamBrowser.security.configKey; }
     
     const headers = {
     'X-SafeExamBrowser-ConfigKeyhash': sebKey
   };
-  alert("sebkey = "+sebKey);
+  
     this.http.get<any>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
       headers: headers
@@ -69,13 +65,11 @@ export class GetExam implements OnInit, OnDestroy {
         }
         this.incompleteExams = data.exams || []; 
         this.isLoading = false;
-        alert(JSON.stringify(data));
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("API Error:", err);
         this.isLoading = false;
-        alert(JSON.stringify(err));
         this.cdr.detectChanges();
       }
     });
