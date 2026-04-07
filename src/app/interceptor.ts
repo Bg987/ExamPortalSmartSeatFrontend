@@ -34,7 +34,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         //2. Call your friend's logout API to be safe
         //Note: Using apiUrl2 since that's where the compiler/auth lives
-        http.post(`${environment.apiUrl}/ExamApi/Auth/logout`, {}, {
+        http.post(`${environment.apiUrl}/api/Auth/logout`, {}, {
           responseType: 'text',
           withCredentials : true,
          })
