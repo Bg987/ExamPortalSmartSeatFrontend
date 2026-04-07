@@ -27,6 +27,7 @@ export class GetExam implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchExams();
+    alert("load compoennt");
     // Refresh the clock every minute
     this.timerId = setInterval(() => {
       this.currentTime = new Date();
@@ -42,6 +43,7 @@ export class GetExam implements OnInit, OnDestroy {
 
   fetchExams() {
     this.isLoading = true;
+    alert("call api");
     this.http.get<any>(`${this.url}/ExamStudent/getStudentIncomplteExam`, {
       withCredentials: true,
     })
@@ -52,13 +54,13 @@ export class GetExam implements OnInit, OnDestroy {
         }
         this.incompleteExams = data.exams || []; 
         this.isLoading = false;
-        console.log(JSON.stringify(data));
+        alert(JSON.stringify(data));
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("API Error:", err);
         this.isLoading = false;
-        console.log()
+        alert(JSON.stringify(err));
         this.cdr.detectChanges();
       }
     });
