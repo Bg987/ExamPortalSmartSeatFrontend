@@ -6,17 +6,21 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environment';
 import { timeout, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-
+import { Subscription } from 'rxjs';
+import { SecurityService } from '../../../../security.service';
 declare var SafeExamBrowser: any;
 
 @Component({
   selector: 'app-main-exam',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './main-exam.html',
   styleUrl: './main-exam.css'
 })
+  
 export class MainExam implements OnInit, OnDestroy {
+
+  private securitySub?: Subscription;
   examId!: string;
   examData: any = null;
 
@@ -45,7 +49,8 @@ export class MainExam implements OnInit, OnDestroy {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private securityService: SecurityService,
   ) {}
 
   ngOnInit() {
@@ -53,11 +58,15 @@ export class MainExam implements OnInit, OnDestroy {
       this.sebKey = SafeExamBrowser.security.configKey; 
     }
     this.examId = this.route.snapshot.paramMap.get('id') || '';
+    this.securitySub = this.securityService.violationTrigger$.subscribe(() => {
+      this.submitFinal(true);
+    });
   }
 
   ngOnDestroy() {
     this.stopTimer();
     if (this.syncTimer) clearTimeout(this.syncTimer);
+    if (this.securitySub) this.securitySub.unsubscribe();
   }
 
   verifyExam() {
@@ -172,7 +181,7 @@ export class MainExam implements OnInit, OnDestroy {
         next: () => {
           localStorage.removeItem(`smartseat_progress_${this.examId}`);
           this.router.navigate(['/dashboard']);
-          alert(isAuto ? "Time's up! Your exam was automatically submitted." : "Exam submitted successfully!");
+          alert(isAuto ? "Your exam was automatically submitted. kindly close SEB" : "Exam submitted successfully!");
         },
         error: () => { 
           this.isLoading = false; 

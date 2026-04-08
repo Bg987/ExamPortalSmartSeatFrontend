@@ -37,6 +37,7 @@ export class GetExam implements OnInit, OnDestroy {
       this.currentTime = new Date();
       this.cdr.detectChanges();
     }, 60000);
+    
   }
 
   ngOnDestroy() {
@@ -105,12 +106,7 @@ getExamStatus(exam: any): 'SOON' | 'TODAY' | 'UPCOMING' {
     const diffInMs = examStartTime.getTime() - this.currentTime.getTime();
     const diffInMins = diffInMs / (1000 * 60);
 
-    // DEBUG LOGS (Check these in F12 console)
-    console.log(`Exam: ${exam.examName} | Diff: ${diffInMins.toFixed(1)} mins`);
-
-    // 3. Logic based on your current time (13:15) and exam time (13:10)
-    // Since 13:15 is AFTER 13:10, diffInMins will be -5.
-    
+     
     const isToday = examStartTime.toDateString() === this.currentTime.toDateString();
 
     if (isToday) {

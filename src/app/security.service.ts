@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from './environment';
+import { Subject } from 'rxjs'; // Add this import
 
 @Injectable({
   providedIn: 'root'
@@ -10,29 +11,39 @@ import { environment } from './environment';
 export class SecurityService {
   private isLockedSource = new BehaviorSubject<boolean>(false);
   isLocked$ = this.isLockedSource.asObservable();
+  private violationTrigger = new Subject<void>();
+  violationTrigger$ = this.violationTrigger.asObservable();
 
+  
   // Guard to prevent the "Alert Loop"
   public isHandlingViolation = false;
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  logAndAlert(code: string) {
-    // If we are already showing an alert, don't trigger another one
+logAndAlert(code: string) {
     if (this.isHandlingViolation) return;
-
     this.isHandlingViolation = true;
     this.lock();
 
-      const messages: { [key: string]: string } = {
-    'TAB_SWITCH': '⚠️ CRITICAL: Window focus lost! Your session is being terminated.',
-    'RIGHT_CLICK': '🚫 BLOCKED: Right-click is prohibited.',
-    'KEYBOARD_SHORTCUT': '🚫 BLOCKED: Unauthorized keyboard shortcut detected.',
-    'CLIPBOARD': '🚫 BLOCKED: Copy/Paste is disabled.'
-  };
+       const messages: { [key: string]: string } = {
+      'TAB_SWITCH': '⚠️ CRITICAL: Tab switching detected. Logging out!',
+      'EXIT_FULLSCREEN': '⚠️ CRITICAL: Fullscreen exited. Logging out!',
+      'RIGHT_CLICK': '🚫 BLOCKED: Right-click is disabled.',
+      'KEYBOARD_SHORTCUT': '🚫 BLOCKED: Developer tools are prohibited.',
+      'CLIPBOARD': '🚫 BLOCKED: Copy/Paste is disabled.'
+    };
+    alert((messages[code] || 'Security Violation!') + " block for 45 minutes");
 
-    // Show the alert (This pauses the browser)
-    alert((messages[code] || 'Security Violation!')+" block for 45 minutes");
-    this.handleForceLogout();  
+    // 1. Check if we are currently on the Exam page
+    if (this.router.url.includes('/Exam/')) {
+      // 2. Trigger the auto-submit signal
+      
+      this.violationTrigger.next();
+      // Note: We don't call handleForceLogout here; 
+      // let the Exam component handle submission FIRST, then logout.
+    } 
+      // If not in an exam, just logout normally
+      this.handleForceLogout();
   }
 
   private handleForceLogout() {
