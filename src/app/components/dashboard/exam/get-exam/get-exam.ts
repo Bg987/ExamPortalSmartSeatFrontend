@@ -4,14 +4,14 @@ declare var SafeExamBrowser: any;
 
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule,Location } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from '../../../../environment';
 
 @Component({
   selector: 'app-get-exam',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './get-exam.html',
   styleUrl: './get-exam.css',
 })
@@ -19,14 +19,15 @@ export class GetExam implements OnInit, OnDestroy {
   incompleteExams: any[] = [];
   isLoading: boolean = false;
   url: string = environment.apiUrl;
-  
+  res: any=null;
   currentTime: Date = new Date();
   private timerId: any;
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -45,6 +46,7 @@ export class GetExam implements OnInit, OnDestroy {
   }
 
   fetchExams() {
+    this.res=null;
     this.isLoading = true;
     let sebKey = "";
     if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
@@ -60,7 +62,13 @@ export class GetExam implements OnInit, OnDestroy {
     })
     .subscribe({
       next: (data) => {
-        alert(JSON.stringify(data));
+        if (data===null) {
+      this.res = "No exams found";
+      this.incompleteExams = [];
+      this.isLoading = false;
+      this.cdr.detectChanges();
+      return;
+    }
         if (data.enrNumber) {
           localStorage.setItem('enrollmentNo', data.enrNumber);
         }
@@ -69,7 +77,11 @@ export class GetExam implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        alert(JSON.stringify(err))
+        if(err.status===403){
+          alert(err.error.message);
+          this.router.navigate(['/']);
+          return;
+        }
         console.error("API Error:", err);
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -119,5 +131,8 @@ getExamStatus(exam: any): 'SOON' | 'TODAY' | 'UPCOMING' {
         duration: exam.duration 
       }
     });
+  }
+  goBack() {
+    this.location.back();
   }
 }

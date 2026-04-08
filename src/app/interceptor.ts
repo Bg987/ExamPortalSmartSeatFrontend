@@ -27,6 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       
       // If backend returns 401 (Unauthorized), the toked
+
       if (error.status === 401) {
         //alert("Unauthorized! logout.....");
         //1. Clear local session
@@ -42,7 +43,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             next: () => console.log("Backend session invalidated"),
             error: (err) => console.error("Could not reach logout API", err)
           });
-        // 3. Force redirect to Login
+        // 3. Force redirect to landing page
         router.navigate(['/']);
       }
 

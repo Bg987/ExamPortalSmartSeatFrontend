@@ -1,9 +1,12 @@
 <div class="exam-container">
+    <button class="back-btn" (click)='goBack()'>
+        <span class="arrow">←</span> Back
+    </button>
     <div class="header">
         <h1>My Exam Schedule</h1>
         <p>Current Time: {{ currentTime | date:'shortTime' }}</p>
     </div>
-
+<div class="res" *ngIf="res!=null">{{res}}</div>
     <div class="card-grid" *ngIf="!isLoading">
         <div *ngFor="let exam of incompleteExams" class="exam-card" [ngClass]="{
             'status-soon': getExamStatus(exam) === 'SOON',
