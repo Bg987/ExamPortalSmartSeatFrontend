@@ -23,13 +23,12 @@ export class SecurityService {
     this.isHandlingViolation = true;
     this.lock();
 
-    const messages: { [key: string]: string } = {
-      'TAB_SWITCH': '⚠️ CRITICAL: Tab switching detected. Logging out!',
-      'EXIT_FULLSCREEN': '⚠️ CRITICAL: Fullscreen exited. Logging out!',
-      'RIGHT_CLICK': '🚫 BLOCKED: Right-click is disabled.',
-      'KEYBOARD_SHORTCUT': '🚫 BLOCKED: Developer tools are prohibited.',
-      'CLIPBOARD': '🚫 BLOCKED: Copy/Paste is disabled.'
-    };
+      const messages: { [key: string]: string } = {
+    'TAB_SWITCH': '⚠️ CRITICAL: Window focus lost! Your session is being terminated.',
+    'RIGHT_CLICK': '🚫 BLOCKED: Right-click is prohibited.',
+    'KEYBOARD_SHORTCUT': '🚫 BLOCKED: Unauthorized keyboard shortcut detected.',
+    'CLIPBOARD': '🚫 BLOCKED: Copy/Paste is disabled.'
+  };
 
     // Show the alert (This pauses the browser)
     alert((messages[code] || 'Security Violation!')+" block for 45 minutes");
