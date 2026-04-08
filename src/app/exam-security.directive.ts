@@ -12,14 +12,14 @@ export class ExamSecurityDirective {
     private router: Router
   ) {}
 
-  // 1. Detect Tab Switching / Minimizing Browser
-  @HostListener('window:blur')
-  onWindowBlur() {
-    // Only trigger if we are in the exam (not on the login page)
-    if (this.router.url === '/') return;
+  // // 1. Detect Tab Switching / Minimizing Browser
+  // @HostListener('window:blur')
+  // onWindowBlur() {
+  //   // Only trigger if we are in the exam (not on the login page)
+  //   if (this.router.url === '/') return;
     
-    this.security.logAndAlert('TAB_SWITCH');
-  }
+  //   this.security.logAndAlert('TAB_SWITCH');
+  // }
 
   // 2. Block Right-Click
   @HostListener('document:contextmenu', ['$event'])
