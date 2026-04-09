@@ -6,17 +6,50 @@
       <p class="subtitle">Secure Examination Environment</p>
     </div>
 
-    <div class="instructions">
-      <h3>System Requirements & Rules</h3>
-      <ul>
-        <li><strong>Fullscreen:</strong> Mandatory. Exiting will lock your session.</li>
-        <li><strong>Blocking:</strong> Tab switching & Right-click & Alt+tab & exit fullscreen & copy-paste are
-          disabled.</li>
-        <li><strong>Logout:</strong> Any security violation results in <b>Immediate Logout</b> and redirect to here. and
-          <b><u>block</u> access for <u>45 minutes</u></b></li>
-      </ul>
-    </div>
+    <div class="side-by-side-container">
 
+      <div class="instructions">
+        <h3>System Requirements & Rules</h3>
+        <ul>
+          <li><strong>Fullscreen:</strong> Mandatory. Exiting will lock your session.</li>
+          <li><strong>Blocking:</strong> Tab switching & Right-click & Alt+tab & exit fullscreen & copy-paste are
+            disabled.</li>
+          <li><strong>Logout:</strong> Any security violation results in <b>Immediate Logout</b> and redirect to here.
+            and <b><u>block</u> access for <u>45 minutes</u></b></li>
+        </ul>
+      </div>
+
+      <div class="seb-setup">
+        <h3>Required Software Setup</h3>
+        <p class="setup-subtitle">You must <u><b>use Safe Exam Browser (SEB)</b></u> to take this exam.</p>
+
+        <div class="download-grid">
+          <div class="download-item">
+            <span class="step-num">1</span>
+            <p>Download & Install SEB</p>
+            <a href="https://github.com/SafeExamBrowser/seb-win-refactoring/releases/download/v3.10.1/SEB_3.10.1.864_SetupBundle.exe"
+              class="download-link">
+              📥 Download SEB 3.10.1
+            </a>
+          </div>
+
+          <div class="download-item">
+            <span class="step-num">2</span>
+            <p>Download Config File</p>
+            <a href="https://drive.google.com/file/d/1HdTLOruYHBlzobVUSV7YGokAUZBpQr8t/view?usp=sharing" target="_blank"
+              class="download-link config">
+              📄 Download SmartSeat Config
+            </a>
+          </div>
+        </div>
+
+        <div class="launch-notice">
+          <p>💡 <b>To Start:</b> After installing SEB, <b>Double-Click</b> the downloaded <b>.seb config file</b> to
+            launch the exam environment.</p>
+        </div>
+      </div>
+
+    </div>
     <div class="action-area">
       <p>By clicking below, the portal will enter <b>Full Screen Mode</b>.</p>
       <button class="btn-start" (click)="startExamPortal()">
