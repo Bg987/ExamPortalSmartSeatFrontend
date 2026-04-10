@@ -1,9 +1,11 @@
 import { Component, ElementRef, ViewChild, AfterViewInit,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule,HttpHeaders } from '@angular/common/http';
 import { RedirectCommand, Router } from '@angular/router';
 import { environment } from '../../environment';
+declare var SafeExamBrowser: any;
+
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,7 @@ export class LoginComponent implements AfterViewInit {
   response: String = '';
   enrNo: string = '';
   error: string = '';
+  sebKey: string = ""; // Declared as class property
   url = environment.apiUrl;
   capturedImage: string | null = null;
   imageBlob: Blob | null = null;
@@ -26,6 +29,12 @@ export class LoginComponent implements AfterViewInit {
     private http: HttpClient,
     private router: Router,
   private cd : ChangeDetectorRef) { }
+
+  ngOnInit() {
+    if (typeof SafeExamBrowser !== 'undefined' && SafeExamBrowser.security) {
+      this.sebKey = SafeExamBrowser.security.configKey;
+    }
+  }
 
   ngAfterViewInit() {
     this.startCamera();
@@ -67,8 +76,13 @@ export class LoginComponent implements AfterViewInit {
     formData.append('enrollmentNumber', this.enrNo);
     formData.append('image', this.imageBlob, 'capture.jpg');
 
+    
+    const headers = new HttpHeaders({
+      'X-SafeExamBrowser-ConfigKeyhash': this.sebKey
+    });
     this.http.post<any>(`${this.url}/Auth/login`, formData, {
       withCredentials: true,
+      headers: headers,
     }).subscribe({
       next: (res) => {
       this.isVerifying = false;
